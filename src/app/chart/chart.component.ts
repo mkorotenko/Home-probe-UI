@@ -13,18 +13,9 @@ import { ChartAPIService } from '../chart-api.service';
 export class ChartComponent implements OnInit, OnChanges {
   @ViewChild('chart') chartEl: ElementRef;
 
-  @Input() pipe = 2;
-
-  @Input() period = 6;
-
   @Input() data: any[];
 
   private chart: any;
-
-  constructor(
-    private chartAPI: ChartAPIService
-  ) {
-  }
 
   ngOnInit() {
     // const chartEl = this.chartEl.nativeElement;
@@ -53,7 +44,6 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.info('got data');
     if (changes.data && this.chart) {
       const chartEl = this.chartEl.nativeElement;
       const chartData = d3.select(chartEl)
@@ -61,13 +51,6 @@ export class ChartComponent implements OnInit, OnChanges {
       chartData.transition().duration(500)
         .call(this.chart);
     }
-  }
-
-  private getStartDate(): Date {
-    const cDate = new Date();
-    let periodLength = 0;
-    periodLength = this.period * 60 * 60 * 1000;
-    return new Date(cDate.getTime() - periodLength);
   }
 
   private getData(probe: any) {
@@ -79,7 +62,7 @@ export class ChartComponent implements OnInit, OnChanges {
 
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < probe.length; i++) {
-      const date = new Date(probe[i].date.replace('.000Z', '+0200'));
+      const date = new Date(probe[i].date.replace('.000Z', '+0300'));
       Temp.push({ x: date, y: probe[i].temp });
       Hum.push({ x: date, y: probe[i].hum });
       Volt.push({ x: date, y: probe[i].bat_v - 0.04 }); // 1.74
