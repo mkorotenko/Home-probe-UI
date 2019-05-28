@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ChartAPIService } from '../chart-api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {
+  data$: Observable<any> = this.serviceAPI.getPipeData(3, new Date('2019-05-27T18:30:32.665Z'));
+  constructor(
+    private serviceAPI: ChartAPIService
+  ) {
   }
 
   ngOnInit() {
