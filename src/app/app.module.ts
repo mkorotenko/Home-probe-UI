@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { PipeCardComponent } from './pipe-card/pipe-card.component';
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    MatCardModule,
     AppRoutingModule,
     HttpClientModule
   ],

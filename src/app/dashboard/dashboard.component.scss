@@ -2,6 +2,11 @@
   display: block;
   width: 100%;
   height: 100%;
+  background-color: #fafafa;
+
+  .dashboard-content {
+    padding: 5px;
+  }
 
   .chart-contaner {
     max-height: 40%;
