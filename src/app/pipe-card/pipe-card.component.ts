@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, filter, shareReplay, map } from 'rxjs/operators';
 
-import { ChartAPIService } from '../chart-api.service';
+import { ChartAPIService } from '../services/chart-api.service';
 
 @Component({
   selector: 'app-pipe-card',

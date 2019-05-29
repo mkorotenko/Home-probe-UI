@@ -1,3 +1,27 @@
+<mat-toolbar>
+  <span>DHT sernsors</span>
+  <span class="toolbar-spacer"></span>
+  <mat-slide-toggle 
+    [checked]="debug$ | async"
+    (change)="onDebugModeChange($event)"
+  >Debug</mat-slide-toggle>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu #menu="matMenu">
+  <!-- <button mat-menu-item>
+    <mat-slide-toggle>Debug</mat-slide-toggle>
+  </button> -->
+  <button mat-menu-item disabled>
+    <mat-icon>voicemail</mat-icon>
+    <span>Check voice mail</span>
+  </button>
+  <!-- <button mat-menu-item>
+    <mat-icon>notifications_off</mat-icon>
+    <span>Disable alerts</span>
+  </button> -->
+</mat-menu>
 <div class="dashboard-content">
   <div fxLayout="column" fxLayoutGap="20px" fxHide.print style="height:100%; min-height:40px;">
     <div fxFlex="grow" class="chart-contaner">
@@ -9,7 +33,7 @@
       <app-pipe-card [pipe]="3">
       </app-pipe-card>    
     </div>
-    <div class="chart-contaner"></div>
-    <div class="chart-contaner"></div>
+    <!-- <div class="chart-contaner"></div>
+    <div class="chart-contaner"></div> -->
   </div>
 </div>
