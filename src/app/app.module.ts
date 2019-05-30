@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponent } from './chart/chart.component';
 import { PipeCardComponent } from './pipe-card/pipe-card.component';
 import { LocalStorageService } from './services/local-storage.service';
+import { SocketService } from './pipe-card/socket.service';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { LocalStorageService } from './services/local-storage.service';
     PipeCardComponent
   ],
   providers: [
-    LocalStorageService
+    LocalStorageService,
+    SocketService
   ],
   bootstrap: [AppComponent]
 })
