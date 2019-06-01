@@ -13,8 +13,8 @@
   </mat-card-actions>
 </mat-card>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item disabled>
-    <mat-icon>voicemail</mat-icon>
-    <span>Check voice mail</span>
+  <button mat-menu-item (click)="delete.emit(pipe)">
+    <mat-icon>highlight_off</mat-icon>
+    <span>Delete pipe</span>
   </button>
 </mat-menu>

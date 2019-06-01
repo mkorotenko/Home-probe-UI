@@ -10,7 +10,7 @@
   </button>
 </mat-toolbar>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="openDialog()">
+  <button mat-menu-item (click)="onOpenDialog()">
     <mat-icon>add_circle_outline</mat-icon>
     <span>Add pipe</span>
   </button>
@@ -21,7 +21,8 @@
       fxFlex="grow"
       class="chart-contaner">
       <app-pipe-card
-        [pipe]="pipe">
+        [pipe]="pipe"
+        (delete)="onDeletePipe($event)">
       </app-pipe-card>    
     </div>
   </div>

@@ -38,13 +38,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.localStorage.setItem('debug_mode', event.checked);
   }
 
-  openDialog(): void {
+  onOpenDialog(): void {
     const dialogRef = this.dialog.open(EditPipeDialogComponent, {
       width: '250px',
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      take(1)
+    ).subscribe(result => {
       const newPipe: number = Number(result);
       this.pipeList$.pipe(
         take(1)
@@ -58,4 +60,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDeletePipe(pipe: number): void {
+    this.pipeList$.pipe(
+      take(1)
+    ).subscribe(pipes => {
+      if (pipes.includes(pipe)) {
+        pipes.splice(pipes.indexOf(pipe), 1);
+        this.localStorage.setItem('pipe_list', pipes);
+      }
+    });
+  }
 }

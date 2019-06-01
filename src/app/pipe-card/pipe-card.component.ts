@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Observable, BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { switchMap, filter, shareReplay, map, takeUntil } from 'rxjs/operators';
 
@@ -13,6 +13,7 @@ import { SocketService, SocketMessageInterface } from './socket.service';
 export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() pipe: number;
+  @Output() delete: EventEmitter<number> = new EventEmitter();
 
   private pipe$: BehaviorSubject<number> = new BehaviorSubject(undefined);
   private date$: BehaviorSubject<Date> = new BehaviorSubject(undefined);
