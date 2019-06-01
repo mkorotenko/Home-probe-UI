@@ -3,7 +3,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { Observable, Subject } from 'rxjs';
 import { MatSlideToggleChange, MatDialog } from '@angular/material';
 import { SocketService } from '../pipe-card/socket.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { EditPipeDialogComponent } from '../edit-pipe-dialog/edit-pipe-dialog.component';
 
 @Component({
@@ -45,7 +45,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      const newPipe: number = Number(result);
+      this.pipeList$.pipe(
+        take(1)
+      ).subscribe(pipes => {
+        if (pipes.includes(newPipe)) {
+          return;
+        }
+        pipes.push(newPipe);
+        this.localStorage.setItem('pipe_list', pipes);
+      });
     });
   }
 
