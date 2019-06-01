@@ -1,22 +1,25 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, filter, shareReplay, map } from 'rxjs/operators';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Observable, BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { switchMap, filter, shareReplay, map, takeUntil } from 'rxjs/operators';
 
 import { ChartAPIService } from '../services/chart-api.service';
+import { SocketService, SocketMessageInterface } from './socket.service';
 
 @Component({
   selector: 'app-pipe-card',
   templateUrl: './pipe-card.component.html',
   styleUrls: ['./pipe-card.component.scss']
 })
-export class PipeCardComponent implements OnInit, OnChanges {
+export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() pipe: number;
 
-  @Input() date: Date;
-
   private pipe$: BehaviorSubject<number> = new BehaviorSubject(undefined);
   private date$: BehaviorSubject<Date> = new BehaviorSubject(undefined);
+
+  private newData$: Observable<SocketMessageInterface> = this.socketService.data$.pipe(
+    filter(data => data && data.pipe === this.pipe)
+  )
 
   data$: Observable<any> = combineLatest(
     this.pipe$,
@@ -28,11 +31,19 @@ export class PipeCardComponent implements OnInit, OnChanges {
     shareReplay(1),
   );
 
+  private destroy$: Subject<void> = new Subject();
+
   constructor(
-    private serviceAPI: ChartAPIService
+    private serviceAPI: ChartAPIService,
+    private socketService: SocketService,
   ) {
   }
   ngOnInit() {
+
+    this.newData$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => this.onUpdate());
+
     this.onUpdate();
   }
 
@@ -40,9 +51,10 @@ export class PipeCardComponent implements OnInit, OnChanges {
     if (changes.pipe) {
       this.pipe$.next(this.pipe);
     }
-    if (changes.date) {
-      this.date$.next(this.date);
-    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 
   onUpdate() {

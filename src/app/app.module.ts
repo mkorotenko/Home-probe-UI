@@ -4,8 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
-  MatCardModule, MatToolbarModule, MatMenuModule,
-  MatIconModule, MatButtonModule, MatSlideToggleModule
+  MatCardModule, MatToolbarModule, MatMenuModule, MatDialogModule, MatInputModule,
+  MatIconModule, MatButtonModule, MatSlideToggleModule, MatFormFieldModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +15,8 @@ import { ChartComponent } from './chart/chart.component';
 import { PipeCardComponent } from './pipe-card/pipe-card.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { SocketService } from './pipe-card/socket.service';
+import { DashboardMenuComponent } from './dashboard-menu/dashboard-menu.component';
+import { EditPipeDialogComponent } from './edit-pipe-dialog/edit-pipe-dialog.component';
 
 @NgModule({
   imports: [
@@ -27,6 +29,9 @@ import { SocketService } from './pipe-card/socket.service';
     MatButtonModule,
     MatToolbarModule,
     MatSlideToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     AppRoutingModule,
     HttpClientModule
   ],
@@ -34,12 +39,17 @@ import { SocketService } from './pipe-card/socket.service';
     AppComponent,
     DashboardComponent,
     ChartComponent,
-    PipeCardComponent
+    PipeCardComponent,
+    DashboardMenuComponent,
+    EditPipeDialogComponent
+  ],
+  entryComponents: [
+    EditPipeDialogComponent
   ],
   providers: [
     LocalStorageService,
     SocketService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
