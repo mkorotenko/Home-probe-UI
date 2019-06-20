@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-edit-pipe-dialog',
   templateUrl: './edit-pipe-dialog.component.html',
-  styleUrls: ['./edit-pipe-dialog.component.scss']
+  styleUrls: ['./edit-pipe-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditPipeDialogComponent {
 

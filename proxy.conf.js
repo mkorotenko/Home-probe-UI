@@ -3,10 +3,7 @@ const PROXY_CONFIG = [
     context: [
       '/docs'
     ],
-    // pathRewrite: {
-    //   "^/auth": ""
-    // },
-    target: 'http://localhost:3000',
+    target: 'http://localhost:3200',
     secure: false,
     changeOrigin: true
   },

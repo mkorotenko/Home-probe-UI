@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import * as io from 'socket.io-client';
-import { environment } from 'src/environments/environment';
 
 export interface SocketMessageInterface {
   pipe: number;
@@ -12,7 +11,7 @@ export interface SocketMessageInterface {
 })
 export class SocketService {
 
-  client = io(environment.socketServer);
+  client = io(location.host);
 
   private dataSource$: BehaviorSubject<SocketMessageInterface> = new BehaviorSubject(undefined);
   data$: Observable<SocketMessageInterface> = this.dataSource$.asObservable();

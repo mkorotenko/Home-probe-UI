@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatCardModule, MatToolbarModule, MatMenuModule, MatDialogModule, MatInputModule,
-  MatIconModule, MatButtonModule, MatSlideToggleModule, MatFormFieldModule
+  MatIconModule, MatButtonModule, MatSlideToggleModule, MatFormFieldModule, MatDatepickerModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,9 +17,12 @@ import { LocalStorageService } from './services/local-storage.service';
 import { SocketService } from './pipe-card/socket.service';
 import { DashboardMenuComponent } from './dashboard-menu/dashboard-menu.component';
 import { EditPipeDialogComponent } from './edit-pipe-dialog/edit-pipe-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
@@ -32,6 +35,7 @@ import { EditPipeDialogComponent } from './edit-pipe-dialog/edit-pipe-dialog.com
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
     AppRoutingModule,
     HttpClientModule
   ],

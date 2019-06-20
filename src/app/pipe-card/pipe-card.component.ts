@@ -1,14 +1,27 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy, EventEmitter, Output } from '@angular/core';
+import {
+  Component, OnInit, Input, OnChanges, SimpleChanges,
+  OnDestroy, EventEmitter, Output, ChangeDetectionStrategy
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { switchMap, filter, shareReplay, map, takeUntil } from 'rxjs/operators';
+import { switchMap, filter, shareReplay, map, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 
 import { ChartAPIService } from '../services/chart-api.service';
 import { SocketService, SocketMessageInterface } from './socket.service';
+// import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+// import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-pipe-card',
   templateUrl: './pipe-card.component.html',
-  styleUrls: ['./pipe-card.component.scss']
+  styleUrls: ['./pipe-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+  // providers: [
+  //   {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+  //   {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  // ],
 })
 export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -20,7 +33,9 @@ export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
 
   private newData$: Observable<SocketMessageInterface> = this.socketService.data$.pipe(
     filter(data => data && data.pipe === this.pipe)
-  )
+  );
+
+  date = new FormControl(moment());
 
   data$: Observable<any> = combineLatest(
     this.pipe$,
@@ -30,6 +45,20 @@ export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
     switchMap(([pipe, date]) => this.serviceAPI.getPipeData(pipe, date)),
     map(data => data.filter(d => d.hum > 1)),
     shareReplay(1),
+  );
+
+  rssiDB$: Observable<number> = this.data$.pipe(
+    map(data => data[data.length - 1].tx_res),
+    distinctUntilChanged(),
+  );
+
+  batteryVolt$: Observable<number> = this.data$.pipe(
+    map(data => data[data.length - 1].bat_v),
+    distinctUntilChanged(),
+  );
+
+  batteryPerc$: Observable<number> = this.batteryVolt$.pipe(
+    map(batteryVolt => Math.round(((batteryVolt - 3.5) / (4.7 - 3.5)) * 100))
   );
 
   private destroy$: Subject<void> = new Subject();
@@ -42,6 +71,10 @@ export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
 
     this.newData$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => this.onUpdate());
+
+    this.date.valueChanges.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => this.onUpdate());
 
@@ -59,7 +92,7 @@ export class PipeCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onUpdate() {
-    const cDate = new Date();
+    const cDate = new Date(); // this.date.value.toDate(); // new Date();
     this.date$.next(new Date(cDate.getTime() - 6 * 60 * 60 * 1000));
   }
 

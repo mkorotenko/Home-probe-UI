@@ -1,11 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, SimpleChanges, OnChanges } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ElementRef, Input, SimpleChanges,
+  OnChanges, ChangeDetectionStrategy
+} from '@angular/core';
 import * as nv from 'nvd3';
 import * as d3 from 'd3';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss']
+  styleUrls: ['./chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartComponent implements OnInit, OnChanges {
   @ViewChild('chart') chartEl: ElementRef;
@@ -16,6 +20,7 @@ export class ChartComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
+    // tslint:disable-next-line:no-string-literal
     const formatter = (d) => d3['time'].format('%H:%M')(new Date(d));
 
     nv.addGraph(() => {
@@ -48,14 +53,14 @@ export class ChartComponent implements OnInit, OnChanges {
   private getData(probe: any) {
     const Temp: any[] = [];
     const Hum: any[] = [];
-    const Volt: any[] = [];
+    // const Volt: any[] = [];
 
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < probe.length; i++) {
       const date = new Date(probe[i].date.replace('.000Z', '+0300'));
       Temp.push({ x: date, y: probe[i].temp });
       Hum.push({ x: date, y: probe[i].hum });
-      Volt.push({ x: date, y: probe[i].bat_v - 0.04 }); // 1.74
+      // Volt.push({ x: date, y: probe[i].bat_v - 0.04 }); // 1.74
     }
     return [
       {
@@ -68,11 +73,11 @@ export class ChartComponent implements OnInit, OnChanges {
         key: 'Temp C',
         color: '#ff7f0e'
       },
-      {
-        values: Volt,
-        key: 'Bat V',
-        color: '#123d9e'
-      },
+      // {
+      //   values: Volt,
+      //   key: 'Bat V',
+      //   color: '#123d9e'
+      // },
     ];
   }
 

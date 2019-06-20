@@ -1,6 +1,19 @@
-<mat-card class="example-card">
+<mat-card>
   <mat-card-header>
     <mat-card-title>{{pipe}}</mat-card-title>
+    <!-- <mat-form-field class="pipe-date-input">
+      <input matInput 
+        [matDatepicker]="dp"
+        placeholder="Date"
+        [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp></mat-datepicker>
+    </mat-form-field> -->
+    <span class="toolbar-spacer"></span>
+    <span>bat: {{batteryPerc$ | async}}%</span>
+    <span>({{batteryVolt$ | async}}V)</span>
+    <span class="toolbar-spacer"></span>
+    <span>RSSI:{{rssiDB$ | async}}db</span>
     <span class="toolbar-spacer"></span>
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
@@ -8,13 +21,16 @@
   </mat-card-header>
   <app-chart [data]="data$ | async">
   </app-chart>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="onUpdate()">Update</button>
-  </mat-card-actions>
+  <!-- <mat-card-actions>
+  </mat-card-actions> -->
 </mat-card>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="delete.emit(pipe)">
     <mat-icon>highlight_off</mat-icon>
     <span>Delete pipe</span>
+  </button>
+  <button mat-menu-item (click)="onUpdate()">
+    <mat-icon>cached</mat-icon>
+    <span>Update</span>
   </button>
 </mat-menu>

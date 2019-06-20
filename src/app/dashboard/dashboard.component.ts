@@ -47,16 +47,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().pipe(
       take(1)
     ).subscribe(result => {
-      const newPipe: number = Number(result);
-      this.pipeList$.pipe(
-        take(1)
-      ).subscribe(pipes => {
-        if (pipes.includes(newPipe)) {
-          return;
-        }
-        pipes.push(newPipe);
-        this.localStorage.setItem('pipe_list', pipes);
-      });
+      if (result) {
+        const newPipe: number = Number(result);
+        this.pipeList$.pipe(
+          take(1)
+        ).subscribe(pipes => {
+          if (pipes.includes(newPipe)) {
+            return;
+          }
+          pipes.push(newPipe);
+          this.localStorage.setItem('pipe_list', pipes);
+        });
+      }
     });
   }
 
